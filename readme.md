@@ -8,6 +8,8 @@ Please do not consider this a full/complete project, it's really a proof-of-conc
 
 I'm by no means a web developer, and barely a programmer. Most of my dev time is spent on Discord-based Bot projects, so this pushed me out of my comfort zone.
 
+PLEASE NOTE - THIS SITE IS NOT LIVE AT THIS TIME. I'm only posting the code to the public.
+
 ## Site Functionality
 This site primarily functions as a resource tracker and external map for Pax Dei.
 - Users can add temporary markers via left-click, and remove them with ctrl+left-click.
