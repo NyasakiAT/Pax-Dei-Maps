@@ -9,13 +9,14 @@ Please do not consider this a full/complete project, it's really a proof-of-conc
 I'm by no means a web developer, and barely a programmer. Most of my dev time is spent on Discord-based Bot projects, so this pushed me out of my comfort zone.
 
 ## Site Functionality
-- This site primarily functions as a resource tracker, and also allows users to add temporary markers via left-click.
-- Temporary markers can be removed via ctrl+left-click.
+This site primarily functions as a resource tracker
+- Users can add temporary markers via left-click, and remove them with ctrl+left-click.
+- Data point additions and removals are handled via Discord Bot commands or manual entries to the JSON files.
+- There is no login/account creation at this time.
 
 
 ## Bot Functionality
-I designed this site to coincide with the use of a Discord bot that accepts user inputs and adds data points to the JSON files (not included in this code).
+I designed this site to work in conjunction with a Discord bot that accepts user inputs and adds data points to the JSON files (not included in this code).
 The bot accepts single and bulk resource additions and removals via commands, and updates the various JSON files accordingly.
-
 
 Pax Dei Maps - 2023 Phoenix
