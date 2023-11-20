@@ -9,10 +9,11 @@ Please do not consider this a full/complete project, it's really a proof-of-conc
 I'm by no means a web developer, and barely a programmer. Most of my dev time is spent on Discord-based Bot projects, so this pushed me out of my comfort zone.
 
 ## Site Functionality
-This site primarily functions as a resource tracker
+This site primarily functions as a resource tracker and external map for Pax Dei.
 - Users can add temporary markers via left-click, and remove them with ctrl+left-click.
 - Data point additions and removals are handled via Discord Bot commands or manual entries to the JSON files.
-- There is no login/account creation at this time.
+- Navigate the map by click-dragging, and zoom in/out via mouse wheel.
+- There is no login/account creation at this time, and any temporary data points added are NOT saved.
 
 
 ## Bot Functionality
