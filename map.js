@@ -317,6 +317,27 @@ const pennybunIcon = L.icon({
   popupAnchor: [-3, -76]
 });
 
+const wolfElderIcon = L.icon({
+  iconUrl: 'https://cdn.discordapp.com/attachments/1134833564597374976/1134833621652488233/grey-wolf.png',
+  iconSize: [72, 72],
+  iconAnchor: [36, 72],
+  popupAnchor: [-3, -76]
+});
+const corruptedWolfIcon = L.icon({
+  iconUrl: 'https://cdn.discordapp.com/attachments/1134833564597374976/1134833621652488233/grey-wolf.png',
+  iconSize: [72, 72],
+  iconAnchor: [36, 72],
+  popupAnchor: [-3, -76]
+});
+const corruptedBoarIcon = L.icon({
+  iconUrl: 'https://cdn.discordapp.com/attachments/1134833564597374976/1134833598889992213/boar.png',
+  iconSize: [72, 72],
+  iconAnchor: [36, 72],
+  popupAnchor: [-3, -76]
+});
+
+
+
 
 async function initMap() {
   try {
@@ -841,6 +862,12 @@ function addMarker(name, lat, lng, rarity, iconUrl) {
       icon = foxIcon;
     } else if (name.toLowerCase() === "pennybun") {
       icon = pennybunIcon;
+    } else if (name.toLowerCase() === "corrupted boar") {
+      icon = corruptedBoarIcon;
+    } else if (name.toLowerCase() === "corrupted wolf") {
+      icon = corruptedWolfIcon;
+    } else if (name.toLowerCase() === "wolf elder") {
+      icon = wolfElderIcon;
     
     } else if (rarity === "common") {
       icon = commonIcon;

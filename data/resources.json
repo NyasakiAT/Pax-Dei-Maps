@@ -71,6 +71,10 @@
       {
         "lat": 124.339,
         "lng": -253.132
+      },
+      {
+        "lat": 419.255,
+        "lng": 430.792
       }
     ]
   },
@@ -196,9 +200,7 @@
     "name": "Silver Fir Branch",
     "category": "Plants",
     "rarity": "rare",
-    "locations": [
-
-    ]
+    "locations": []
   },
   {
     "name": "Flax",
@@ -1145,6 +1147,48 @@
       {
         "lat": -106.279,
         "lng": 341.522
+      }
+    ]
+  },
+  {
+    "name": "wolf elder",
+    "category": "Animals",
+    "locations": [
+      {
+        "lat": -428.31,
+        "lng": 133.716
+      }
+    ]
+  },
+  {
+    "name": "corrupted boar",
+    "category": "Animals",
+    "locations": [
+      {
+        "lat": -428.045,
+        "lng": 134.482
+      },
+      {
+        "lat": -428.357,
+        "lng": 133.544
+      },
+      {
+        "lat": -429.357,
+        "lng": 129.514
+      },
+      {
+        "lat": -426.795,
+        "lng": 131.092
+      }
+    ]
+  },
+  {
+    "name": "corrupted wolf",
+    "category": "Animals",
+    "locations": [
+      {
+        "lat": -428.232,
+        "lng": 132.482
       }
     ]
   }
