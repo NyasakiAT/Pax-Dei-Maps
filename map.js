@@ -736,6 +736,23 @@ if (clearAllButton) {
       clearAllButton.style.left = '340px';
   });
 }
+var closeButton = document.querySelector('.close-button');
+
+if (closeButton) {
+    closeButton.addEventListener('click', function() {
+        var sidebar = document.querySelector('.sidebar');
+
+        // Close the sidebar by removing the 'open' class
+        sidebar.classList.remove('open');
+
+        // Reset the left positions to their default values
+        document.getElementById('resources-button').style.left = '225px';
+        var clearAllButton = document.querySelector('.clear-all-button');
+        if (clearAllButton) {
+            clearAllButton.style.left = '340px';
+        }
+    });
+}
 
 function closeSidebar() {
   var sidebar = document.querySelector('.sidebar');
