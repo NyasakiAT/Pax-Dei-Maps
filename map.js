@@ -347,7 +347,7 @@ async function initMap() {
 
       map = L.map("map", {
           zoomControl: false,
-          maxZoom: 6,
+          maxZoom: 4,
           crs: L.CRS.Simple
       }).setView(
           [0, 0], 0);
@@ -676,87 +676,74 @@ function filterUniqueLocations(locations, category) {
 }
 
 function toggleButtons() {
-  var resourcesButton = document.getElementById('resources-button');
-  var clearAllButton = document.querySelector('.clear-all-button');
-  var infoButton = document.getElementById('info-button');
-  var sidebar = document.querySelector('.sidebar');
+  const resourcesButton = document.getElementById('resources-button');
+  const clearAllButton = document.querySelector('.clear-all-button');
+  const sidebar = document.querySelector('.sidebar');
 
-  // Toggle the open class on the sidebar
   sidebar.classList.toggle('open');
 
-  // Calculate the new left position for the Resources and Clear All buttons based on the sidebar state
-  var newLeft = sidebar.classList.contains('open') ? sidebar.offsetWidth + 30 : 50;
+  const newLeft = sidebar.classList.contains('open') ? sidebar.offsetWidth + 30 : 50;
 
-  // Apply the new left position to the Resources and Clear All buttons
-  resourcesButton.style.left = newLeft + 'px';
+  resourcesButton.style.left = `${newLeft}px`;
+
   if (clearAllButton) {
-      clearAllButton.style.left = newLeft + 115 + 'px';
+    clearAllButton.style.left = `${newLeft + 115}px`;
   }
 
-  // If the sidebar is closed, reset the left positions to their default values for Resources and Clear All
   if (!sidebar.classList.contains('open')) {
-      resourcesButton.style.left = '225px';
-      if (clearAllButton) {
-          clearAllButton.style.left = '340px';
-      }
+    resourcesButton.style.left = '225px';
+
+    if (clearAllButton) {
+      clearAllButton.style.left = '340px';
+    }
   }
 }
 
-var infoButton = document.getElementById('info-button');
-var infoBox = document.querySelector('.info-box');
-var timeoutId;
+const infoButton = document.getElementById('info-button');
+const infoBox = document.querySelector('.info-box');
+let timeoutId;
 
 if (infoButton && infoBox) {
-  infoButton.addEventListener('mouseover', function() {
-      clearTimeout(timeoutId);
-      infoBox.classList.add('active');
+  infoButton.addEventListener('mouseover', () => {
+    clearTimeout(timeoutId);
+    infoBox.classList.add('active');
   });
 
-  infoButton.addEventListener('mouseout', function() {
-      // Set a timeout to fade out after 4 seconds of inactivity
-      timeoutId = setTimeout(function() {
-          infoBox.classList.remove('active');
-      }, 2000);
+  infoButton.addEventListener('mouseout', () => {
+    timeoutId = setTimeout(() => {
+      infoBox.classList.remove('active');
+    }, 2000);
   });
 }
 
-
-// Add an event listener for the clear-all button if it exists
-var clearAllButton = document.querySelector('.clear-all-button');
+const clearAllButton = document.querySelector('.clear-all-button');
 
 if (clearAllButton) {
-  clearAllButton.addEventListener('click', function() {
-      var sidebar = document.querySelector('.sidebar');
-
-      // Close the sidebar by removing the 'open' class
-      sidebar.classList.remove('open');
-
-      // Reset the left positions to their default values
-      document.getElementById('resources-button').style.left = '225px';
-      clearAllButton.style.left = '340px';
+  clearAllButton.addEventListener('click', () => {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('open');
+    document.getElementById('resources-button').style.left = '225px';
+    clearAllButton.style.left = '340px';
   });
-}
-var closeButton = document.querySelector('.close-button');
-
-if (closeButton) {
-    closeButton.addEventListener('click', function() {
-        var sidebar = document.querySelector('.sidebar');
-
-        // Close the sidebar by removing the 'open' class
-        sidebar.classList.remove('open');
-
-        // Reset the left positions to their default values
-        document.getElementById('resources-button').style.left = '225px';
-        var clearAllButton = document.querySelector('.clear-all-button');
-        if (clearAllButton) {
-            clearAllButton.style.left = '340px';
-        }
-    });
 }
 
 function closeSidebar() {
-  var sidebar = document.querySelector('.sidebar');
+  const sidebar = document.querySelector('.sidebar.open');
   sidebar.classList.remove('open');
+}
+
+const closeButton = document.querySelector('.close-button');
+
+if (closeButton) {
+  closeButton.addEventListener('click', () => {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('open');
+    document.getElementById('resources-button').style.left = '225px';
+    const clearAllButton = document.querySelector('.clear-all-button');
+    if (clearAllButton) {
+      clearAllButton.style.left = '340px';
+    }
+  });
 }
 
 
