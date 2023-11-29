@@ -146,7 +146,7 @@ const greywolfIcon = L.icon({
 });
 
 const loiostearsIcon = L.icon({
-  iconUrl: 'https://cdn.discordapp.com/attachments/1134833564597374976/1134833600072781824/deer.png',
+  iconUrl: 'https://cdn.discordapp.com/attachments/1110652388328603738/1179157823469395979/loios-tears.png',
   iconSize: [72, 72],
   iconAnchor: [36, 72],
   popupAnchor: [-3, -76]
@@ -316,7 +316,6 @@ const pennybunIcon = L.icon({
   iconAnchor: [32, 64],
   popupAnchor: [-3, -76]
 });
-
 const wolfElderIcon = L.icon({
   iconUrl: 'https://cdn.discordapp.com/attachments/1134833564597374976/1134833621652488233/grey-wolf.png',
   iconSize: [72, 72],
@@ -338,7 +337,6 @@ const corruptedBoarIcon = L.icon({
 
 
 
-
 async function initMap() {
   try {
       resourceLocations = await fetchResourceLocations();
@@ -348,6 +346,11 @@ async function initMap() {
       map = L.map("map", {
           zoomControl: false,
           maxZoom: 4,
+          scrollWheelZoom: false,
+          smoothWheelZoom: true,
+          smoothSensitivity: 1,
+          wheelDebounceTime: 100,
+          zoomSnap: 0.1,
           crs: L.CRS.Simple
       }).setView(
           [0, 0], 0);
@@ -468,7 +471,7 @@ async function initMap() {
       clearAllButton.addEventListener("click", clearAllMarkers);
       var bounds = [[-360,-360], [360,360]];
       var imageOverlay = L.imageOverlay(
-          "assets/map.webp", [
+          "assets/map.jpg", [
               [480, -480], // North West
               [-480, 480], // South East
           ]
@@ -616,12 +619,13 @@ async function initMap() {
 
         // Event listener for the marker's click event
         tempMarker.on("click", function (event) {
-            // Check if the Ctrl key is pressed
-            if (event.originalEvent.ctrlKey) {
-                // Remove the temporary marker
-                tempMarker.remove();
-            }
-        });
+          // Check if the Ctrl key (Windows/Linux) or Command key (Mac) is pressed
+          if (event.originalEvent.ctrlKey || event.originalEvent.metaKey) {
+              // Remove the temporary marker
+              tempMarker.remove();
+          }
+      });
+      
 
         // Event listener for copying data (text and coordinates)
         const copyDataButton = popupDiv.querySelector("#copy-data");
@@ -675,76 +679,97 @@ function filterUniqueLocations(locations, category) {
   return uniqueLocations;
 }
 
-function toggleButtons() {
+function toggleAndCloseSidebar() {
+  const sidebar = document.querySelector('.sidebar');
   const resourcesButton = document.getElementById('resources-button');
   const clearAllButton = document.querySelector('.clear-all-button');
-  const sidebar = document.querySelector('.sidebar');
+  const loginButton = document.querySelector('.login-button');
 
-  sidebar.classList.toggle('open');
+  if (sidebar.classList.contains('open')) {
+    // Sidebar is open, close it
+    sidebar.classList.remove('open');
 
-  const newLeft = sidebar.classList.contains('open') ? sidebar.offsetWidth + 30 : 50;
+    // Reset the left positions to their default values
+    resourcesButton.style.left = '15px';
+    clearAllButton.style.left = '135px';
+    loginButton.style.left = '240px';
+  } else {
+    // Sidebar is closed, open it
+    sidebar.classList.add('open');
 
-  resourcesButton.style.left = `${newLeft}px`;
+    // Calculate new left positions if sidebar is open based on initial positions in CSS
+    const initialPositions = {
+      resources: 15,
+      clearAll: 135,
+      login: 240,
+    };
 
-  if (clearAllButton) {
-    clearAllButton.style.left = `${newLeft + 115}px`;
-  }
-
-  if (!sidebar.classList.contains('open')) {
-    resourcesButton.style.left = '225px';
+    resourcesButton.style.left = `${initialPositions.resources + 255}px`;
 
     if (clearAllButton) {
-      clearAllButton.style.left = '340px';
+      clearAllButton.style.left = `${initialPositions.clearAll + 255}px`;
     }
+
+    loginButton.style.left = `${initialPositions.login + 255}px`;
   }
 }
 
-const infoButton = document.getElementById('info-button');
-const infoBox = document.querySelector('.info-box');
-let timeoutId;
 
-if (infoButton && infoBox) {
-  infoButton.addEventListener('mouseover', () => {
-    clearTimeout(timeoutId);
-    infoBox.classList.add('active');
-  });
 
-  infoButton.addEventListener('mouseout', () => {
-    timeoutId = setTimeout(() => {
-      infoBox.classList.remove('active');
-    }, 2000);
-  });
+
+
+function closeSidebar() {
+  const sidebar = document.querySelector('.sidebar.open');
+  if (sidebar) {
+    sidebar.classList.remove('open');
+
+    // Reset the left positions to their default values
+    document.getElementById('resources-button').style.left = '15px';
+    const clearAllButton = document.querySelector('.clear-all-button');
+    if (clearAllButton) {
+      clearAllButton.style.left = '135px';
+    }
+
+    const loginButton = document.querySelector('.login-button');
+    if (loginButton) {
+      loginButton.style.left = '240px'; // Adjust the value as needed
+    }
+  }
 }
 
 const clearAllButton = document.querySelector('.clear-all-button');
 
 if (clearAllButton) {
-  clearAllButton.addEventListener('click', () => {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.remove('open');
-    document.getElementById('resources-button').style.left = '225px';
-    clearAllButton.style.left = '340px';
-  });
+  clearAllButton.addEventListener('click', closeSidebar);
 }
 
-function closeSidebar() {
-  const sidebar = document.querySelector('.sidebar.open');
-  sidebar.classList.remove('open');
-}
 
 const closeButton = document.querySelector('.close-button');
 
 if (closeButton) {
-  closeButton.addEventListener('click', () => {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.remove('open');
-    document.getElementById('resources-button').style.left = '225px';
-    const clearAllButton = document.querySelector('.clear-all-button');
-    if (clearAllButton) {
-      clearAllButton.style.left = '340px';
-    }
-  });
+  closeButton.addEventListener('click', toggleSidebar);
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const infoButton = document.getElementById('info-button');
+  const infoBox = document.querySelector('.info-box');
+  let timeoutId;
+
+  if (infoButton && infoBox) {
+    infoButton.addEventListener('click', () => {
+      clearTimeout(timeoutId);
+      infoBox.classList.add('active');
+    });
+
+    infoButton.addEventListener('mouseout', () => {
+      timeoutId = setTimeout(() => {
+        infoBox.classList.remove('active');
+      }, 5000);
+    });
+  }
+});
+
 
 
 // Function to handle dropdown menu selection
@@ -872,7 +897,7 @@ function addMarker(name, lat, lng, rarity, iconUrl) {
       icon = corruptedWolfIcon;
     } else if (name.toLowerCase() === "wolf elder") {
       icon = wolfElderIcon;
-    
+
     } else if (rarity === "common") {
       icon = commonIcon;
     } else if (rarity === "uncommon") {
@@ -1017,6 +1042,118 @@ function addMousemoveListenerToDocument() {
       hideDropdownsIfMouseOutside(event, "special-dropdown");
   });
 }
+
+
+
+L.Map.mergeOptions({
+  // @section Mousewheel options
+  // @option smoothWheelZoom: Boolean|String = true
+  // Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
+  // it will zoom to the center of the view regardless of where the mouse was.
+  smoothWheelZoom: true,
+
+  // @option smoothWheelZoom: number = 1
+  // setting zoom speed
+  smoothSensitivity:1
+
+});
+
+
+L.Map.SmoothWheelZoom = L.Handler.extend({
+
+  addHooks: function () {
+      L.DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
+  },
+
+  removeHooks: function () {
+      L.DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
+  },
+
+  _onWheelScroll: function (e) {
+      if (!this._isWheeling) {
+          this._onWheelStart(e);
+      }
+      this._onWheeling(e);
+  },
+
+  _onWheelStart: function (e) {
+      var map = this._map;
+      this._isWheeling = true;
+      this._wheelMousePosition = map.mouseEventToContainerPoint(e);
+      this._centerPoint = map.getSize()._divideBy(2);
+      this._startLatLng = map.containerPointToLatLng(this._centerPoint);
+      this._wheelStartLatLng = map.containerPointToLatLng(this._wheelMousePosition);
+      this._startZoom = map.getZoom();
+      this._moved = false;
+      this._zooming = true;
+
+      map._stop();
+      if (map._panAnim) map._panAnim.stop();
+
+      this._goalZoom = map.getZoom();
+      this._prevCenter = map.getCenter();
+      this._prevZoom = map.getZoom();
+
+      this._zoomAnimationId = requestAnimationFrame(this._updateWheelZoom.bind(this));
+  },
+
+  _onWheeling: function (e) {
+      var map = this._map;
+
+      this._goalZoom = this._goalZoom + L.DomEvent.getWheelDelta(e) * 0.003 * map.options.smoothSensitivity;
+      if (this._goalZoom < map.getMinZoom() || this._goalZoom > map.getMaxZoom()) {
+          this._goalZoom = map._limitZoom(this._goalZoom);
+      }
+      this._wheelMousePosition = this._map.mouseEventToContainerPoint(e);
+
+      clearTimeout(this._timeoutId);
+      this._timeoutId = setTimeout(this._onWheelEnd.bind(this), 200);
+
+      L.DomEvent.preventDefault(e);
+      L.DomEvent.stopPropagation(e);
+  },
+
+  _onWheelEnd: function (e) {
+      this._isWheeling = false;
+      cancelAnimationFrame(this._zoomAnimationId);
+      this._map._moveEnd(true);
+  },
+
+  _updateWheelZoom: function () {
+      var map = this._map;
+
+      if ((!map.getCenter().equals(this._prevCenter)) || map.getZoom() != this._prevZoom)
+          return;
+
+      this._zoom = map.getZoom() + (this._goalZoom - map.getZoom()) * 0.3;
+      this._zoom = Math.floor(this._zoom * 100) / 100;
+
+      var delta = this._wheelMousePosition.subtract(this._centerPoint);
+      if (delta.x === 0 && delta.y === 0)
+          return;
+
+      if (map.options.smoothWheelZoom === 'center') {
+          this._center = this._startLatLng;
+      } else {
+          this._center = map.unproject(map.project(this._wheelStartLatLng, this._zoom).subtract(delta), this._zoom);
+      }
+
+      if (!this._moved) {
+          map._moveStart(true, false);
+          this._moved = true;
+      }
+
+      map._move(this._center, this._zoom);
+      this._prevCenter = map.getCenter();
+      this._prevZoom = map.getZoom();
+
+      this._zoomAnimationId = requestAnimationFrame(this._updateWheelZoom.bind(this));
+  }
+
+});
+
+L.Map.addInitHook('addHandler', 'smoothWheelZoom', L.Map.SmoothWheelZoom );
+
 
 // Call the function to add the mousemove listener to the document
 addMousemoveListenerToDocument();
