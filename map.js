@@ -477,7 +477,6 @@ async function initMap() {
           ]
         ).addTo(map);
 
-      map.fitBounds(bounds);
       // Generate options for the "Fruit" dropdown menu
       const fruitDropdown = document.getElementById("fruit-dropdown");
       const uniqueFruitLocations = filterUniqueLocations(resourceLocations, "Fruit");
