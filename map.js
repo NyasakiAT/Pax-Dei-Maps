@@ -407,7 +407,7 @@ async function initMap() {
           },
 
           _zoomHome: function(e) {
-              this._map.setView([0, 0], this.options.zoom, {
+              this._map.setView([0, 0], 0, {
                   animate: true
               });
           },
@@ -690,18 +690,18 @@ function toggleAndCloseSidebar() {
     sidebar.classList.remove('open');
 
     // Reset the left positions to their default values
-    resourcesButton.style.left = '15px';
-    clearAllButton.style.left = '135px';
-    loginButton.style.left = '240px';
+    resourcesButton.style.left = '105px';
+    clearAllButton.style.left = '225px';
+    loginButton.style.left = '10px';
   } else {
     // Sidebar is closed, open it
     sidebar.classList.add('open');
 
     // Calculate new left positions if sidebar is open based on initial positions in CSS
     const initialPositions = {
-      resources: 15,
-      clearAll: 135,
-      login: 240,
+      resources: 105,
+      clearAll: 225,
+      login: 10,
     };
 
     resourcesButton.style.left = `${initialPositions.resources + 255}px`;
@@ -715,24 +715,21 @@ function toggleAndCloseSidebar() {
 }
 
 
-
-
-
 function closeSidebar() {
   const sidebar = document.querySelector('.sidebar.open');
   if (sidebar) {
     sidebar.classList.remove('open');
 
     // Reset the left positions to their default values
-    document.getElementById('resources-button').style.left = '15px';
+    document.getElementById('resources-button').style.left = '105px';
     const clearAllButton = document.querySelector('.clear-all-button');
     if (clearAllButton) {
-      clearAllButton.style.left = '135px';
+      clearAllButton.style.left = '225px';
     }
 
     const loginButton = document.querySelector('.login-button');
     if (loginButton) {
-      loginButton.style.left = '240px'; // Adjust the value as needed
+      loginButton.style.left = '10px';
     }
   }
 }

@@ -42,7 +42,7 @@ html, body {
     padding: 0 10px;
     position: fixed;
     top: 10px;
-    left: 15px;
+    left: 105px;
     z-index: 400;
     transition: left 0.3s ease;
     height: 37px;
@@ -66,12 +66,18 @@ html, body {
     padding: 8px;
     position: fixed;
     top: 10px;
-    left: 135px;
+    left: 225px;
     z-index: 200;
     transition: left 0.3s ease;
     height: 37px;
     border-radius: 24px;
     width: 95px;
+}
+
+.clear-all-button img {
+    margin-right: 8px;
+    width: 12px;
+    vertical-align: middle;
 }
 
 .login-button {
@@ -83,13 +89,19 @@ html, body {
     padding: 8px;
     position: fixed;
     top: 10px;
-    left: 240px;
+    left: 10px;
     z-index: 200;
     transition: left 0.3s ease;
     height: 37px;
     border-radius: 24px;
-    width: 70px;
+    width: 90px;
 
+}
+
+#login-button img {
+    margin-right: 8px;
+    width: 20px;
+    vertical-align: middle;
 }
 
 #info-button {
@@ -114,6 +126,29 @@ html, body {
     width: 12px;
     vertical-align: middle;
 }
+
+.info-box {
+    display: none;
+    position: fixed;
+    bottom: -200px;
+    width: 425px;
+    left: 5px;
+    background-color: #000;
+    color: white;
+    padding-top: 10px;
+    font-size: 16px;
+    border-radius: 14px;
+    z-index: 1000;
+    text-align: center;
+    transition: bottom 0.3s ease;
+}
+
+.info-box.active {
+    bottom: 5px;
+    display: block;
+    animation: fadeInOut 5s forwards;
+}
+
 
 .custom-dropdown {
     display: block;
@@ -203,28 +238,6 @@ footer p {
     background-color: transparent;
     outline: none;
     cursor: pointer;
-}
-
-.info-box {
-    display: none;
-    position: fixed;
-    bottom: -200px;
-    width: 26%;
-    left: 5px;
-    background-color: #000;
-    color: white;
-    padding-top: 10px;
-    font-size: 16px;
-    border-radius: 14px;
-    z-index: 1000;
-    text-align: center;
-    transition: bottom 0.3s ease;
-}
-
-.info-box.active {
-    bottom: 5px;
-    display: block;
-    animation: fadeInOut 5s forwards;
 }
 
 
@@ -684,7 +697,7 @@ footer p {
       }
   
   .leaflet-top .leaflet-control {
-      margin-top: 125px;
+      margin-top: 10px;
       }
   
   .leaflet-bottom .leaflet-control {
