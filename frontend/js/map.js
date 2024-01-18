@@ -12,11 +12,11 @@ async function fetchData(fileName) {
 }
 
 async function fetchResourceLocations() {
-  return fetchData("data/resources.json");
+  return fetchData("_data/resources.json");
 }
 
 async function fetchPlayerLocations() {
-  const playerLocations = await fetchData("data/players.json");
+  const playerLocations = await fetchData("_data/players.json");
   playerLocations.push({
       name: "Check All",
       lat: null,
