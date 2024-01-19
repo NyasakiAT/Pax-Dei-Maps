@@ -26,7 +26,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resource
-        fields = ['id', 'url', 'name', 'category', 'rarity', 'locations', 'icon_url']
+        fields = ['id', 'url', 'name', 'category', 'rarity', 'locations', 'icon']
 
 class SimplifiedResourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

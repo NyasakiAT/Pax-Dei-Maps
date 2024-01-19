@@ -6,7 +6,7 @@ class Resource(models.Model):
     name = models.CharField(max_length=30)
     rarity = models.ForeignKey(Rarity, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='resources')
-    icon_url = models.CharField(max_length=30, blank=True, null=True)
+    icon = models.ImageField(null=True, blank=True)
     
     def __str__(self):
         return self.name
