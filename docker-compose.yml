@@ -35,6 +35,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/backend
+      - ./media:/media
     ports:
       - "8000:8000"
     environment:
@@ -49,8 +50,13 @@ services:
       context: ./frontend
     networks:
       - lan
+    volumes:
+      - ./media:/media
     ports:
       - "80:80"
+      - 443:443
+    depends_on:
+      - backend
 
 networks:
   lan:

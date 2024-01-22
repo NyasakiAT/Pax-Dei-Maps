@@ -37,8 +37,9 @@ class SimplifiedResourceSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 class CategorySerializer(serializers.ModelSerializer):
+    icon_rel = serializers.ReadOnlyField()
     resources = SimplifiedResourceSerializer(many=True, read_only=True)
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'resources']
+        fields = ['id', 'name', 'icon_rel', 'resources']
