@@ -130,27 +130,6 @@ function onOptionSelect(event, category, name, lat, lng, rarity, iconUrl) {
     updateDropdownAppearance();
 }
 
-function toggleDropdown(category) {
-    const dropdownOptions = document.getElementById(`${category}-dropdown`);
-
-    if (dropdownOptions) {
-        dropdownOptions.classList.toggle("open");
-    } else {
-        console.error(`Dropdown options with ID '${category}' not found.`);
-    }
-}
-
-// Function to toggle the visibility of the Fruit dropdown
-function toggleDropdown(category) {
-    const dropdownOptions = document.getElementById(`${category}-dropdown`);
-
-    // Check if dropdownOptions is not null before accessing its style property
-    if (dropdownOptions) {
-        dropdownOptions.style.display = dropdownOptions.style.display === "block" ? "none" : "block";
-    } else {
-        console.error(`Dropdown options with ID '${category}' not found.`);
-    }
-}
 
 // Function to add Orange color to selected menu options
 function updateDropdownAppearance() {
@@ -176,20 +155,4 @@ function updateDropdownAppearance() {
         dropdownTitle.style.backgroundColor = category === "fruit" ? "green" : "blue";
         dropdownTitle.style.color = "transparent";
     }
-}
-
-// Function to hide dropdown menus if the mouse is moved outside of the menu
-function hideDropdownsIfMouseOutside(event, dropdownId) {
-    console.log(dropdownId)
-    const dropdownOptions = document.getElementById(dropdownId);
-    if (dropdownOptions.style.display === "block" && !event.target.closest(".custom-dropdown")) {
-        dropdownOptions.style.display = "none";
-    }
-}
-
-//Function to add event listener to detect mouse movements outside the dropdown menus
-function addMousemoveListenerToDocument(dropdownId) {
-    document.addEventListener("mousemove", (event) => {
-        hideDropdownsIfMouseOutside(event, dropdownId);
-    });
 }
