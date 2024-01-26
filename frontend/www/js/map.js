@@ -120,7 +120,7 @@ async function initMap() {
       crs: L.CRS.Simple
     }).setView(
       [0, 0], 0);
-    map.on("zoomend", function () {
+    map.on("zoomend", function() {
       if (map.getZoom() > map.options.maxZoom) {
         map.setZoom(map.options.maxZoom);
       }
@@ -136,7 +136,7 @@ async function initMap() {
         zoom: 0,
       },
 
-      onAdd: function (map) {
+      onAdd: function(map) {
         var controlName = "gin-control-zoom",
           container = L.DomUtil.create("div", controlName + " leaflet-bar"),
           options = this.options;
@@ -172,25 +172,25 @@ async function initMap() {
         return container;
       },
 
-      _zoomHome: function (e) {
+      _zoomHome: function(e) {
         this._map.setView([0, 0], 0, {
           animate: true
         });
       },
 
-      onRemove: function (map) {
+      onRemove: function(map) {
         map.off("zoomend zoomlevelschange", this._updateDisabled, this);
       },
 
-      _zoomIn: function (e) {
+      _zoomIn: function(e) {
         this._map.zoomIn(e.shiftKey ? 3 : 1);
       },
 
-      _zoomOut: function (e) {
+      _zoomOut: function(e) {
         this._map.zoomOut(e.shiftKey ? 3 : 1);
       },
 
-      _createButton: function (html, title, className, container, fn, iconUrl) {
+      _createButton: function(html, title, className, container, fn, iconUrl) {
         var link = L.DomUtil.create("a", className, container);
         link.innerHTML = html;
         link.href = "#";
@@ -211,7 +211,7 @@ async function initMap() {
         return link;
       },
 
-      _updateDisabled: function () {
+      _updateDisabled: function() {
         var map = this._map,
           className = "leaflet-disabled";
 
@@ -232,10 +232,10 @@ async function initMap() {
     var zoomHome = new L.Control.zoomHome();
     zoomHome.addTo(map);
 
+const clearResourcesButton = document.querySelector(".clear-resources-button");
+      clearResourcesButton.addEventListener("click", clearAllMarkers);
 
-    const clearAllButton = document.querySelector(".clear-all-button");
-    clearAllButton.addEventListener("click", clearAllMarkers);
-    var bounds = [[-360, -360], [360, 360]];
+    
     var imageOverlay = L.imageOverlay(
       "assets/map.jpg", [
       [480, -480], // North West
@@ -364,11 +364,12 @@ async function initMap() {
       mouseCoordinatesDiv.textContent = `WORK-IN-PROGRESS\nBecause of their abundance,\nGneiss Rocks and Sapwood\nare not marked on the map.\n\n[${e.latlng.lat.toFixed(3)}], [${e.latlng.lng.toFixed(3)}]`;
     });
 
-
     // Event listener for the map's click event
-    map.on("click", function (e) {
+    map.on("click", function(e) {
       // Create a temporary marker
-      const tempMarker = L.marker(e.latlng, { icon: tempMarkerIcon }).addTo(map);
+      const tempMarker = L.marker(e.latlng, {
+              icon: tempMarkerIcon
+          }).addTo(map);
 
       // Create a custom popup-like behavior
       const popupDiv = document.createElement("div");
@@ -384,15 +385,24 @@ async function initMap() {
       copyButton.id = "copy-data";
       copyButton.textContent = "Copy Data";
 
+          const saveButton = document.createElement("button");
+          saveButton.id = "save-location";
+          saveButton.textContent = "Save Location";
+
       popupDiv.appendChild(inputField);
       popupDiv.appendChild(coordinatesText);
+
+          // Add spacing between the Copy and Save buttons
+          popupDiv.appendChild(document.createElement("br")); // Add a line break
       popupDiv.appendChild(copyButton);
+popupDiv.appendChild(document.createTextNode("\u00A0\u00A0")); // Add spacing
+          popupDiv.appendChild(saveButton);
 
       // Bind the custom popup to the temporary marker
       tempMarker.bindPopup(popupDiv).openPopup();
 
       // Event listener for the marker's click event
-      tempMarker.on("click", function (event) {
+      tempMarker.on("click", function(event) {
         // Check if the Ctrl key (Windows/Linux) or Command key (Mac) is pressed
         if (event.originalEvent.ctrlKey || event.originalEvent.metaKey) {
           // Remove the temporary marker
@@ -400,10 +410,9 @@ async function initMap() {
         }
       });
 
-
       // Event listener for copying data (text and coordinates)
       const copyDataButton = popupDiv.querySelector("#copy-data");
-      copyDataButton.addEventListener("click", function () {
+      copyDataButton.addEventListener("click", function() {
         // Get the text and coordinates entered by the user
         const inputField = document.getElementById("marker-input");
         const enteredText = inputField.value;
@@ -413,6 +422,7 @@ async function initMap() {
         const combinedText = `${enteredText}${coordinates}`;
         copyToClipboard(combinedText);
       });
+
       // Function to copy text to the clipboard
       function copyToClipboard(text) {
         const textArea = document.createElement("textarea");
@@ -430,6 +440,16 @@ async function initMap() {
   }
 }
 
+function createOptionElement(name, category) {
+  const option = document.createElement("div");
+  option.className = "option";
+  option.textContent = name;
+  option.addEventListener("click", (event) => {
+      onOptionSelect(event, category, name);
+  });
+  return option;
+}
+
 // Function to filter unique locations based on category
 function filterUniqueLocations(locations, category) {
   const uniqueLocations = [];
@@ -441,6 +461,143 @@ function filterUniqueLocations(locations, category) {
     }
   });
   return uniqueLocations;
+}
+
+
+function toggleAndCloseSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const resourcesButton = document.getElementById('resources-button');
+  const clearResourcesButton = document.querySelector('.clear-resources-button');
+  const loginButton = document.querySelector('.login-button');
+  const loadMarkersButton = document.querySelector('.load-markers-button');
+
+  if (sidebar.classList.contains('open')) {
+      // Sidebar is open, close it
+      sidebar.classList.remove('open');
+
+      // Reset the left positions to their default values
+      resourcesButton.style.left = '105px';
+      clearResourcesButton.style.left = '235px';
+      loginButton.style.left = '10px';
+      loadMarkersButton.style.left = '400px';
+  } else {
+      // Sidebar is closed, open it
+      sidebar.classList.add('open');
+
+      // Calculate new left positions if sidebar is open based on initial positions in CSS
+      const initialPositions = {
+          resources: 105,
+          clearAll: 235,
+          login: 10,
+          loadMarkersButton: 400,
+      };
+
+      resourcesButton.style.left = `${initialPositions.resources + 255}px`;
+
+      if (clearResourcesButton) {
+          clearResourcesButton.style.left = `${initialPositions.clearAll + 255}px`;
+      }
+      loginButton.style.left = `${initialPositions.login + 255}px`;
+
+      loadMarkersButton.style.left = `${initialPositions.loadMarkersButton + 255}px`;
+  }
+}
+
+
+function closeSidebar() {
+  const sidebar = document.querySelector('.sidebar.open');
+  if (sidebar) {
+      sidebar.classList.remove('open');
+
+      // Reset the left positions to their default values
+      document.getElementById('resources-button').style.left = '105px';
+
+      const clearResourcesButton = document.querySelector('.clear-resources-button');
+      if (clearResourcesButton) {
+          clearResourcesButton.style.left = '235px';
+      }
+
+      const loginButton = document.querySelector('.login-button');
+      if (loginButton) {
+          loginButton.style.left = '10px';
+      }
+      const loadMarkersButton = document.querySelector('.load-markers-button');
+      if (loadMarkersButton) {
+          loadMarkersButton.style.left = '400px';
+      }
+  }
+}
+
+const clearResourcesButton = document.querySelector('.clear-resources-button');
+
+if (clearResourcesButton) {
+  clearResourcesButton.addEventListener('click', closeSidebar);
+
+}
+
+const closeButton = document.querySelector('.close-button');
+
+if (closeButton) {
+  closeButton.addEventListener('click', toggleSidebar);
+
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const infoButton = document.getElementById('info-button');
+  const infoBox = document.querySelector('.info-box');
+  let timeoutId;
+
+  if (infoButton && infoBox) {
+      infoButton.addEventListener('click', () => {
+          clearTimeout(timeoutId);
+          infoBox.classList.add('active');
+      });
+
+      infoButton.addEventListener('mouseout', () => {
+          timeoutId = setTimeout(() => {
+              infoBox.classList.remove('active');
+          }, 5000);
+      });
+  }
+});
+
+
+
+// Function to handle dropdown menu selection
+function onOptionSelect(event, category, name, lat, lng, rarity, iconUrl) {
+  const selectedOption = event.target.textContent;
+  const dropdownTitle = document.querySelector(`.${category}-dropdown .dropdown-title`);
+
+  // Toggle the option selection
+  if (selectedFruits.includes(selectedOption)) {
+      // If the option is already selected, remove it from the selectedFruits array
+      const index = selectedFruits.indexOf(selectedOption);
+      if (index > -1) {
+          selectedFruits.splice(index, 1);
+      }
+  } else {
+      // If the option is not selected, add it to the selectedFruits array
+      selectedFruits.push(selectedOption);
+  }
+
+  // Toggle the option selection for players
+  if (selectedPlayers.includes(selectedOption)) {
+      // If the option is already selected, remove it from the selectedPlayers array
+      const index = selectedPlayers.indexOf(selectedOption);
+      if (index > -1) {
+          selectedPlayers.splice(index, 1);
+      }
+  } else {
+      // If the option is not selected, add it to the selectedPlayers array
+      selectedPlayers.push(selectedOption);
+  }
+
+  // Call updateMarkers() after selection to update the map markers
+  updateMarkers();
+
+  // Update the dropdown menu appearance to highlight orange
+  updateDropdownAppearance();
 }
 
 // Function to add a marker for a specific location
@@ -540,7 +697,6 @@ function addMarker(name, lat, lng, rarity, iconUrl) {
     } else if (rarity === "rare") {
       icon = rareIcon;
     } else {
-
       icon = defaultIcon;
     }
   }
@@ -571,7 +727,7 @@ function clearAllMarkers() {
   });
 }
 
-// Function to update the markers based on the selected fruits or animals
+// Function to update the markers
 function updateMarkers() {
   // Remove all existing markers from the map
   markers.forEach((marker) => marker.remove());
@@ -624,22 +780,22 @@ L.Map.mergeOptions({
 
 L.Map.SmoothWheelZoom = L.Handler.extend({
 
-  addHooks: function () {
+  addHooks: function() {
     L.DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
   },
 
-  removeHooks: function () {
+  removeHooks: function() {
     L.DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
   },
 
-  _onWheelScroll: function (e) {
+  _onWheelScroll: function(e) {
     if (!this._isWheeling) {
       this._onWheelStart(e);
     }
     this._onWheeling(e);
   },
 
-  _onWheelStart: function (e) {
+  _onWheelStart: function(e) {
     var map = this._map;
     this._isWheeling = true;
     this._wheelMousePosition = map.mouseEventToContainerPoint(e);
@@ -660,7 +816,7 @@ L.Map.SmoothWheelZoom = L.Handler.extend({
     this._zoomAnimationId = requestAnimationFrame(this._updateWheelZoom.bind(this));
   },
 
-  _onWheeling: function (e) {
+  _onWheeling: function(e) {
     var map = this._map;
 
     this._goalZoom = this._goalZoom + L.DomEvent.getWheelDelta(e) * 0.003 * map.options.smoothSensitivity;
@@ -676,13 +832,13 @@ L.Map.SmoothWheelZoom = L.Handler.extend({
     L.DomEvent.stopPropagation(e);
   },
 
-  _onWheelEnd: function (e) {
+  _onWheelEnd: function(e) {
     this._isWheeling = false;
     cancelAnimationFrame(this._zoomAnimationId);
     this._map._moveEnd(true);
   },
 
-  _updateWheelZoom: function () {
+  _updateWheelZoom: function() {
     var map = this._map;
 
     if ((!map.getCenter().equals(this._prevCenter)) || map.getZoom() != this._prevZoom)
@@ -717,8 +873,61 @@ L.Map.SmoothWheelZoom = L.Handler.extend({
 
 L.Map.addInitHook('addHandler', 'smoothWheelZoom', L.Map.SmoothWheelZoom);
 
-// Call the initMap function when the DOM is ready
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
+  // Add mouseleave event listener to the sidebar
+  const sidebar = document.querySelector('.sidebar');
+
+  if (sidebar) {
+      sidebar.addEventListener("mouseleave", function() {
+          closeSidebar();
+      });
+  }
+
+  function closeSidebar() {
+      const openSidebar = document.querySelector('.sidebar.open');
+      if (openSidebar) {
+          openSidebar.classList.remove('open');
+
+          // Reset the left positions to their default values
+          document.getElementById('resources-button').style.left = '105px';
+
+          const clearResourcesButton = document.querySelector('.clear-resources-button');
+          if (clearResourcesButton) {
+              clearResourcesButton.style.left = '235px';
+          }
+
+          const loginButton = document.querySelector('.login-button');
+          if (loginButton) {
+              loginButton.style.left = '10px';
+          }
+
+          const loadMarkersButton = document.querySelector('.load-markers-button');
+          if (loadMarkersButton) {
+              loadMarkersButton.style.left = '400px';
+          }
+      }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
   initMap();
+
+// Get the button element and the span element by their IDs
+  var loadMarkersButton = document.getElementById("load-markers-button");
+  var buttonTextSpan = document.getElementById("button-text");
+
+  // Store the original text content of the button
+  var originalButtonText = buttonTextSpan.textContent;
+
+  // Add a click event listener to the button
+  loadMarkersButton.addEventListener("click", function(event) {
+      // Toggle the text content
+      if (buttonTextSpan.textContent === originalButtonText) {
+          buttonTextSpan.textContent = "Hide Saved Markers";
+      } else {
+          buttonTextSpan.textContent = originalButtonText;
+      }
+
+  });
 
 });
