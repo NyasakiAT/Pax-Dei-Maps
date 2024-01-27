@@ -23,7 +23,7 @@ async function fetchCategories() {
 }*/
 
 let map;
-let selectedFruits = [];
+let resources = [];
 let selectedAnimals = [];
 let selectedPlants = [];
 let selectedMushrooms = [];
@@ -99,8 +99,6 @@ function createDropdown(category) {
       onOptionSelect(event, location.name, location.lat, location.lng);
     });
   });
-
-  addMousemoveListenerToDocument(dropdownId + "-dropdown")
 }
 
 async function initMap() {
@@ -252,107 +250,6 @@ async function initMap() {
     categories.forEach(category => {
       createDropdown(category);
     });
-    /*
-    const fruitDropdown = document.getElementById("fruit-dropdown");
-    const uniqueFruitLocations = filterUniqueLocations(resourceLocations, "Fruit");
-    uniqueFruitLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      fruitDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, location.name, location.lat, location.lng);
-      });
-    });
-
-    // Generate options for the "Animals" dropdown menu
-    const animalsDropdown = document.getElementById("animals-dropdown");
-    const uniqueAnimalLocations = filterUniqueLocations(resourceLocations, "Animals");
-    uniqueAnimalLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      animalsDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, location.name, location.lat, location.lng);
-      });
-    });
-    // Generate options for the "Plants" dropdown menu
-    const plantsDropdown = document.getElementById("plants-dropdown");
-    const uniquePlantLocations = filterUniqueLocations(resourceLocations, "Plants");
-    uniquePlantLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      plantsDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Plants", location.name, location.lat, location.lng);
-      });
-    });
-
-    // Generate options for the "Mushrooms" dropdown menu
-    const mushroomsDropdown = document.getElementById("mushrooms-dropdown");
-    const uniqueMushroomLocations = filterUniqueLocations(resourceLocations, "Mushrooms");
-    uniqueMushroomLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      mushroomsDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Mushrooms", location.name, location.lat, location.lng);
-      });
-    });
-    // Generate options for the "Players" dropdown menu
-    const playersDropdown = document.getElementById("players-dropdown");
-    const uniquePlayerLocations = filterUniqueLocations(playerLocations, "Players");
-    uniquePlayerLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      playersDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Players", location.lat, location.lng);
-      });
-    });
-
-    // Generate options for the "Flowers" dropdown menu
-    const flowersDropdown = document.getElementById("flowers-dropdown");
-    const uniqueFlowerLocations = filterUniqueLocations(resourceLocations, "Flowers");
-    uniqueFlowerLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      flowersDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Flowers", location.lat, location.lng);
-      });
-    });
-
-    // Generate options for the "Stone" dropdown menu
-    const stoneDropdown = document.getElementById("stone-dropdown");
-    const uniqueStoneLocations = filterUniqueLocations(resourceLocations, "Stone");
-    uniqueStoneLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      stoneDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Stone", location.lat, location.lng);
-      });
-    });
-
-    // Generate options for the "Stone" dropdown menu
-    const specialDropdown = document.getElementById("special-dropdown");
-    const uniqueSpecialLocations = filterUniqueLocations(resourceLocations, "Special");
-    uniqueSpecialLocations.forEach((location) => {
-      const option = document.createElement("div");
-      option.className = "option";
-      option.textContent = location.name;
-      specialDropdown.appendChild(option);
-      option.addEventListener("click", (event) => {
-        onOptionSelect(event, "Stone", location.lat, location.lng);
-      });
-    });*/
 
     // Add event listener to update mouse coordinates when the mouse moves over the map
     map.on("mousemove", (e) => {
@@ -367,6 +264,12 @@ async function initMap() {
     // Event listener for the map's click event
     map.on("click", function (e) {
       // Create a temporary marker
+      const tempMarkerIcon = L.icon({
+        iconUrl: 'https://cdn.discordapp.com/attachments/885950046506450955/1133868988565291018/icons.png',
+        iconSize: [72, 72],
+        iconAnchor: [36, 72],
+        popupAnchor: [-3, -76]
+      });
       const tempMarker = L.marker(e.latlng, {
         icon: tempMarkerIcon
       }).addTo(map);
@@ -562,27 +465,15 @@ function onOptionSelect(event, category, name, lat, lng, rarity, iconUrl) {
   const dropdownTitle = document.querySelector(`.${category}-dropdown .dropdown-title`);
 
   // Toggle the option selection
-  if (selectedFruits.includes(selectedOption)) {
+  if (resources.includes(selectedOption)) {
     // If the option is already selected, remove it from the selectedFruits array
-    const index = selectedFruits.indexOf(selectedOption);
+    const index = resources.indexOf(selectedOption);
     if (index > -1) {
-      selectedFruits.splice(index, 1);
+      resources.splice(index, 1);
     }
   } else {
     // If the option is not selected, add it to the selectedFruits array
-    selectedFruits.push(selectedOption);
-  }
-
-  // Toggle the option selection for players
-  if (selectedPlayers.includes(selectedOption)) {
-    // If the option is already selected, remove it from the selectedPlayers array
-    const index = selectedPlayers.indexOf(selectedOption);
-    if (index > -1) {
-      selectedPlayers.splice(index, 1);
-    }
-  } else {
-    // If the option is not selected, add it to the selectedPlayers array
-    selectedPlayers.push(selectedOption);
+    resources.push(selectedOption);
   }
 
   // Call updateMarkers() after selection to update the map markers
@@ -596,10 +487,18 @@ function onOptionSelect(event, category, name, lat, lng, rarity, iconUrl) {
 function addMarker(name, lat, lng, rarity, iconUrl) {
   let icon;
 
+  const defaultIcon = L.icon({
+    iconUrl: 'https://cdn.discordapp.com/attachments/885950046506450955/1133868988565291018/icons.png',
+    iconSize: [72, 72],
+    iconAnchor: [36, 72],
+    popupAnchor: [-3, -76]
+  });
+
+  console.log(iconUrl)
   if (iconUrl) {
     icon = L.icon({
       iconUrl: iconUrl,
-      iconSize: [128, 128],
+      iconSize: [64, 64],
     });
   } else {
     icon = defaultIcon;
@@ -616,15 +515,6 @@ function addMarker(name, lat, lng, rarity, iconUrl) {
 function clearAllMarkers() {
   markers.forEach((marker) => marker.remove());
   markers = [];
-  selectedFruits = [];
-  selectedAnimals = [];
-  selectedPlants = [];
-  selectedMushrooms = [];
-  selectedFlowers = [];
-  selectedPlayers = [];
-  selectedStone = [];
-  selectedSpecial = [];
-  tempMarkers = [];
   updateDropdownAppearance();
   map.setView([0, 0], 0, {
     animate: true
@@ -638,31 +528,23 @@ function updateMarkers() {
   markers = [];
 
   // Add markers for selected options
-  selectedFruits.forEach((selectedOption) => {
-    const locationData = resourceLocations.find(
-      (location) => location.name === selectedOption
-    );
-    if (locationData) {
-      locationData.locations.forEach((location) => {
+  const resourceData = resourceLocations
+  if (resourceData) {
+
+    resourceData.forEach((resource) => {
+      resource.locations.forEach((location) => {
         const marker = addMarker(
-          locationData.name,
+          resource.name,
           location.lat,
           location.lng,
-          locationData.rarity
+          resource.rarity,
+          resource.icon_rel
         );
         markers.push(marker);
       });
-    }
-    const playerData = playerLocations.find(
-      (location) => location.name === selectedOption
-    );
-    if (playerData) {
-      playerData.locations.forEach((location) => {
-        const marker = addMarker(playerData.name, location.lat, location.lng);
-        markers.push(marker);
-      });
-    }
-  });
+    });
+  }
+
 
   // Add all markers back to the map
   markers.forEach((marker) => marker.addTo(map));

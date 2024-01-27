@@ -8,5 +8,11 @@ class Resource(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='resources')
     icon = models.ImageField(null=True, blank=True)
     
+    @property
+    def icon_rel(self):
+        if self.icon:
+            return self.icon.url.lstrip('/')
+        return None
+
     def __str__(self):
         return self.name

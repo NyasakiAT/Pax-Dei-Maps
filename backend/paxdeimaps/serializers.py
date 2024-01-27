@@ -20,13 +20,14 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ['lng', 'lat']
 
 class ResourceSerializer(serializers.ModelSerializer):
+    icon_rel = serializers.ReadOnlyField()
     category = CategorySerializer(read_only=True)
     rarity = RaritySerializer(read_only=True)
     locations = LocationSerializer(many=True, read_only=True)
 
     class Meta:
         model = Resource
-        fields = ['id', 'url', 'name', 'category', 'rarity', 'locations', 'icon']
+        fields = ['id', 'url', 'name', 'category', 'rarity', 'locations', 'icon_rel']
 
 class SimplifiedResourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
