@@ -149,10 +149,10 @@ function updateDropdownAppearance() {
         }
     });
 
-    // Check if selectedPlayers array is empty to remove orange highlight from menu
-    const allDeselected = dropdownOptions.length === selectedPlayers.length;
-    if (allDeselected) {
-        dropdownTitle.style.backgroundColor = category === "fruit" ? "green" : "blue";
-        dropdownTitle.style.color = "transparent";
-    }
+    // // Check if selectedPlayers array is empty to remove orange highlight from menu
+    // const allDeselected = dropdownOptions.length === selectedPlayers.length;
+    // if (allDeselected) {
+    //     dropdownTitle.style.backgroundColor = category === "fruit" ? "green" : "blue";
+    //     dropdownTitle.style.color = "transparent";
+    // }
 }
